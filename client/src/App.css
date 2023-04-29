@@ -1,0 +1,59 @@
+.font{
+  font-family: 'Hanken Grotesk', sans-serif;
+}
+.background{
+  background-image: url("../public/bgdotted.png");
+  background-size: cover;
+}
+/**button**/
+.exploreBtn{
+  margin-top: 4rem;
+  background-color: rgb(0, 102, 255);
+  padding:0.35rem 2rem 0.35rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 1rem;
+  transition: all 0.5s;
+  color: white;
+}
+
+.exploreBtn:hover{
+  background-color: rgb(85, 150, 255);
+  color: black;
+}
+
+.exploreBtn:hover .right-ar{
+  transition: all 0.4s;
+   margin-left: 0.8rem;
+
+}
+
+.exploreBtn:hover .left-ar{
+  transition: all 0.4s;
+  margin-right: 0.8rem;
+}
+
+#saveBtn{
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding:0.25rem 1.5rem 0.25rem 1.5rem;
+}
+#cancelBtn{
+  margin-top: 1rem;
+  font-size: 1rem;
+  padding:0.25rem 1.5rem 0.25rem 1.5rem;
+  background-color: brown;
+}
+#save{
+  margin: 0;
+  font-size: 1rem;
+  padding:0.25rem 1.5rem 0.25rem 1.5rem;
+}
+#cancel{
+  margin: 0;
+  font-size: 1rem;
+  padding:0.25rem 1.5rem 0.25rem 1.5rem;
+  background-color: brown;
+}
+#cancelBtn:hover{
+  background-color: rgb(255, 148, 148);
+}
