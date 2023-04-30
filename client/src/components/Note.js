@@ -13,7 +13,7 @@ const Note = () => {
   const [add, setAdd] = useState(false);
   const [authUser, setAuthUser] = useState("");
   const [token, setToken] = useState("")
-  const [show,setShow] = useState(false);
+  const [show, setShow] = useState(false);
 
 
   const getAllNotes = async () => {
@@ -133,6 +133,11 @@ const Note = () => {
     setShow(!show);
   }
 
+  const logoutHandler = () => {
+    window.localStorage.clear();
+    navigate("/")
+  }
+
   useEffect(() => {
     // getUser();
     // authUser && getAllNotes();
@@ -164,26 +169,28 @@ const Note = () => {
   return (
 
     <div className='md:m-16 md:p-16 p-4 m-2 bg-blue-100 rounded-xl shadow-xl'>
-      <div className='flex justify-between items-center'>
-        <p className='text-xl font'>Hello <span className='text-blue-600'>{authUser.name}!</span></p>
+      <div className='flex justify-between items-start'>
+        <p className='text-2xl font'>Hello <br></br><span className='text-blue-600'>{authUser.name}!</span></p>
 
-       { show ? <div className='flex justify-center items-center flex-col'>
-         <span onClick={showProfile} className="material-symbols-outlined text-4xl text-blue-600 cursor-pointer">
-            account_circle
+        {show ? <div className='flex justify-center items-center flex-col'>
+          <span onClick={showProfile} className="material-symbols-outlined cursor-pointer text-red-800">
+            cancel
           </span>
-          
           <div className='flex justify-center items-center flex-col bg-white rounded-lg p-4 shadow-lg'>
             <p className='font'>{authUser.name}</p>
             <p className='font'>{authUser.email}</p>
-            <button className='exploreBtn font' id='cancelBtn'>Logout</button>
+            <button onClick={logoutHandler} className='exploreBtn font' id='cancelBtn'>Logout</button>
           </div>
-        </div> : <span onClick={showProfile} className="material-symbols-outlined text-4xl cursor-pointer">
+        </div> : <div className='flex justify-center items-center flex-col'>
+          <span onClick={showProfile} className="material-symbols-outlined text-4xl cursor-pointer">
             account_circle
-          </span>}
+          </span>
+
+        </div>}
 
 
       </div>
-      <div className='flex justify-between items-center md:flex-row flex-col'>
+      <div className='flex justify-between items-center md:flex-row flex-col my-8'>
         <p className='text-4xl font'><span className="text-blue-600">Note</span>Wise</p>
         <button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={adder} >Add Note +</button>
 
