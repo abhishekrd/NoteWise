@@ -9,7 +9,7 @@ const Main = () => {
               <p className='font text-2xl px-4 text-center'>Your digital notebook for all your thoughts and ideas.</p>
               </div>
               
-             <Link to="/create"><button className='exploreBtn font'>Get Started <span className='right-ar'>	&rarr;</span></button></Link> 
+             <Link to="/login"><button className='exploreBtn font'>Get Started <span className='right-ar'>	&rarr;</span></button></Link> 
               
         </div>
   )

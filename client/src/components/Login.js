@@ -10,6 +10,9 @@ const Login = () => {
 
   const loginHandler = async (e) => {
      e.preventDefault();
+     if(!email || !password){
+       return alert("Please enter all the fields!")
+     }
      const userData = await fetch("http://localhost:5000/signin",{
         method:"POST",
         headers:{

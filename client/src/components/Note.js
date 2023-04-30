@@ -189,10 +189,10 @@ const Note = () => {
       <div className='flex justify-center items-center flex-col md:grid md:grid-cols-3'>
         {notes.map(note => {
           return <div className='rounded-2xl md:p-12 md:m-8 p-4 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note.notes_id}>
-            <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note.notes_id)}><span class="material-symbols-outlined">
+            <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note.notes_id)}><span className="material-symbols-outlined">
               edit
             </span></button>
-              <button className='' onClick={() => deletor(note.notes_id)}><span class="material-symbols-outlined">
+              <button className='' onClick={() => deletor(note.notes_id)}><span className="material-symbols-outlined">
                 delete
               </span></button></div>
             <p className='text-xl font'>{note.note_description}</p>
