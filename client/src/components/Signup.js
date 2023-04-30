@@ -41,7 +41,7 @@ const Signup = () => {
               <p className='text-3xl font'><span className="text-blue-600">Note</span>Wise</p>
               <input type='text' className='font text-lg px-8 py-2 border-2 rounded-lg outline-none transition-all transition-duration-500 shadow-sm focus:shadow-xl focus:border-2 focus:border-blue-600' placeholder='Enter your Name' onChange={(e) => setName(e.target.value)} ></input>
               <input type='email' className='font text-lg px-8 py-2 border-2 rounded-lg outline-none transition-all transition-duration-500 shadow-sm focus:shadow-xl focus:border-2 focus:border-blue-600' placeholder='Enter your Email' onChange={(e) => setEmail(e.target.value)} ></input>
-              <input type='password' className='font text-lg px-8 py-2 border-2 rounded-lg outline-none transition-all transition-duration-500 shadow-sm focus:shadow-xl focus:border-2 focus:border-blue-600' placeholder='Enter your Password'  onChange={(e) => setPassword(e.target.value)}  ></input>
+              <input type='password' className='font text-lg px-8 py-2 border-2 rounded-lg outline-none transition-all transition-duration-500 shadow-sm focus:shadow-xl focus:border-2 focus:border-blue-600' placeholder='Enter your Password'  onChange={(e) => setPassword(e.target.value)}></input>
               <button className='font bg-blue-600 hover:bg-blue-500 active:scale-95 transition-all transition-duration-500 outline-none px-6 py-2 rounded-lg border-none hover:shadow-xl text-white hover:text-black' id='LoginBtn' onClick={registerUser} >SIGN UP</button>
               <p className='text-sm font'>Already have account? <Link to="/login" className='text-blue-500'>Login</Link> here</p>
         </div>

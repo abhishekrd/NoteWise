@@ -13,7 +13,7 @@ const Note = () => {
   const [add, setAdd] = useState(false);
   const [authUser, setAuthUser] = useState("");
   const [token, setToken] = useState("")
-
+  const [show,setShow] = useState(false);
 
 
   const getAllNotes = async () => {
@@ -129,6 +129,10 @@ const Note = () => {
     setAdd(true);
   }
 
+  const showProfile = () => {
+    setShow(!show);
+  }
+
   useEffect(() => {
     // getUser();
     // authUser && getAllNotes();
@@ -163,17 +167,19 @@ const Note = () => {
       <div className='flex justify-between items-center'>
         <p className='text-xl font'>Hello <span className='text-blue-600'>{authUser.name}!</span></p>
 
-        <div className='profilecontainer'>
-         <span className="material-symbols-outlined text-4xl text-blue-600">
+       { show ? <div className='flex justify-center items-center flex-col'>
+         <span onClick={showProfile} className="material-symbols-outlined text-4xl text-blue-600 cursor-pointer">
             account_circle
           </span>
           
-          <div className='profile'>
+          <div className='flex justify-center items-center flex-col bg-white rounded-lg p-4 shadow-lg'>
             <p className='font'>{authUser.name}</p>
             <p className='font'>{authUser.email}</p>
-            <button className='exploreBtn' id='cancelBtn'>Logout</button>
+            <button className='exploreBtn font' id='cancelBtn'>Logout</button>
           </div>
-        </div>
+        </div> : <span onClick={showProfile} className="material-symbols-outlined text-4xl cursor-pointer">
+            account_circle
+          </span>}
 
 
       </div>
