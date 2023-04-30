@@ -1,22 +1,52 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 
 const Note = () => {
 
+  const navigate = useNavigate()
   const [notes, setNotes] = useState([]);
   const [noteDesc, setNoteDesc] = useState("");
   const [edit, setEdit] = useState(false);
   const [id, setId] = useState("");
   const [note, setNote] = useState("");
   const [add, setAdd] = useState(false);
+  const [authUser, setAuthUser] = useState("");
+  const [token, setToken] = useState("")
+
+
 
   const getAllNotes = async () => {
     try {
-      const data = await fetch("http://localhost:5000/notes");
+      const data = await fetch(`http://localhost:5000/notes/${authUser.user_id}`, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("jwt")
+        }
+      });
       const res = await data.json();
-      const sortedRes = await res.sort((a, b) => a.notes_id - b.notes_id);
+      const sortedRes = await res && res.sort((a, b) => a.notes_id - b.notes_id);
       console.log(sortedRes);
       setNotes(sortedRes)
+
+    }
+    catch (err) {
+      console.log(err);
+    }
+  }
+
+  const getUser = () => {
+
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const token = localStorage.getItem("jwt");
+      if (!user || !token) {
+        navigate("/")
+        return alert("please Log in first!")
+      }
+      setAuthUser(user);
+      // console.log(authUser);
+      setToken(token);
+
     }
     catch (err) {
       console.log(err);
@@ -28,7 +58,8 @@ const Note = () => {
       const editedNote = await fetch(`http://localhost:5000/note/${id}`, {
         method: "PUT",
         headers: {
-          "Content-type": "application/json"
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("jwt")
         },
         body: JSON.stringify({
           note_description: noteDesc
@@ -56,7 +87,10 @@ const Note = () => {
     if (window.confirm("Are you sure to delete the note?")) {
       try {
         const deleted = await fetch(`http://localhost:5000/note/${noteId}`, {
-          method: "DELETE"
+          method: "DELETE",
+          headers: {
+            "Authorization": "Bearer " + localStorage.getItem("jwt")
+          }
         })
         console.log(deleted);
         getAllNotes();
@@ -72,10 +106,11 @@ const Note = () => {
 
   const addNote = async (req, res) => {
     try {
-      const addedNote = await fetch("http://localhost:5000/note", {
+      const addedNote = await fetch(`http://localhost:5000/note/${authUser.user_id}`, {
         method: "POST",
         headers: {
-          "Content-type": "application/json"
+          "Content-type": "application/json",
+          "Authorization": "Bearer " + localStorage.getItem("jwt")
         },
         body: JSON.stringify({
           note_description: note
@@ -95,12 +130,53 @@ const Note = () => {
   }
 
   useEffect(() => {
-    getAllNotes()
+    // getUser();
+    // authUser && getAllNotes();
+    const persistData = async () => {
+      try {
+        await getUser();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    persistData();
   }, [])
+
+  useEffect(() => {
+    const getTheData = async () => {
+      try {
+        authUser && await getAllNotes();
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    getTheData();
+
+  }, [authUser])
+
+
 
   return (
 
     <div className='md:m-16 md:p-16 p-4 m-2 bg-blue-100 rounded-xl shadow-xl'>
+      <div className='flex justify-between items-center'>
+        <p className='text-xl font'>Hello <span className='text-blue-600'>{authUser.name}!</span></p>
+
+        <div className='profilecontainer'>
+         <span className="material-symbols-outlined text-4xl text-blue-600">
+            account_circle
+          </span>
+          
+          <div className='profile'>
+            <p className='font'>{authUser.name}</p>
+            <p className='font'>{authUser.email}</p>
+            <button className='exploreBtn' id='cancelBtn'>Logout</button>
+          </div>
+        </div>
+
+
+      </div>
       <div className='flex justify-between items-center md:flex-row flex-col'>
         <p className='text-4xl font'><span className="text-blue-600">Note</span>Wise</p>
         <button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={adder} >Add Note +</button>

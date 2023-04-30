@@ -2,8 +2,9 @@ const pool = require("../db")
 
 const postNote = async (req,res) => {
     try{
+        const userId = req.params.userId;
         const {note_description} = req.body;
-        const newNote = await pool.query("INSERT INTO Notes (note_description) VALUES($1) RETURNING *",[note_description])
+        const newNote = await pool.query("INSERT INTO Notes (note_description, user_id) VALUES($1,$2) RETURNING *",[note_description, userId])
         res.json(newNote.rows);
      }
      catch(err){
@@ -12,8 +13,11 @@ const postNote = async (req,res) => {
 }
 
 const getAllNotes = async (req,res) => {
+
+    const userId = req.params.userId;
+
     try{
-       const allNotes = await pool.query("SELECT * FROM notes");
+       const allNotes = await pool.query("SELECT * FROM notes WHERE user_id = $1", [userId]);
        res.json(allNotes.rows);
     } 
     catch (err) {

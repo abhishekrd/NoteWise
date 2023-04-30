@@ -3,12 +3,13 @@ const app = express();
 const pool = require("./db")
 const cors = require('cors')
 const noteRoutes = require("./routes/noteRoutes")
+const userRoutes = require("./routes/userRoutes")
 
 app.use(cors());
 app.use(express.json())
 
 app.use(noteRoutes);
-
+app.use(userRoutes);
 
 app.listen(5000, () => {
     try{
