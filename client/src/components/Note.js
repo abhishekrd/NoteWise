@@ -18,7 +18,7 @@ const Note = () => {
 
   const getAllNotes = async () => {
     try {
-      const data = await fetch(`http://localhost:5000/notes/${authUser.user_id}`, {
+      const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/notes/${authUser.user_id}`, {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("jwt")
         }
@@ -55,7 +55,7 @@ const Note = () => {
 
   const editHandler = async () => {
     try {
-      const editedNote = await fetch(`http://localhost:5000/note/${id}`, {
+      const editedNote = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${id}`, {
         method: "PUT",
         headers: {
           "Content-type": "application/json",
@@ -86,7 +86,7 @@ const Note = () => {
     console.log(noteId);
     if (window.confirm("Are you sure to delete the note?")) {
       try {
-        const deleted = await fetch(`http://localhost:5000/note/${noteId}`, {
+        const deleted = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${noteId}`, {
           method: "DELETE",
           headers: {
             "Authorization": "Bearer " + localStorage.getItem("jwt")
@@ -111,7 +111,7 @@ const Note = () => {
     }
 
     try {
-      const addedNote = await fetch(`http://localhost:5000/note/${authUser.user_id}`, {
+      const addedNote = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${authUser.user_id}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",

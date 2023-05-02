@@ -16,7 +16,7 @@ const Login = () => {
      }
     try{
       setLoading(true)
-      const userData = await fetch("http://localhost:5000/signin",{
+      const userData = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signin`,{
         method:"POST",
         headers:{
           "Content-type":"application/json"
