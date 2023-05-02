@@ -56,14 +56,5 @@ const signinUser = async (req,res) => {
     }
 }
 
-const getAllUsers = async (req,res) => {
-    try {
-        const users = await pool.query("SELECT * FROM users")
-        res.json(users.rows)
-    } catch (error) {
-        console.log(error);
-    }
-}
 
-
-module.exports = {signupUser,getAllUsers,signinUser};
+module.exports = {signupUser,signinUser};

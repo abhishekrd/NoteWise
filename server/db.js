@@ -4,11 +4,19 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const pool = new Pool({
-    user:"postgres",
-    password:process.env.DB_PASS,
-    host:"localhost",
-    port:5432,
-    database:"notes"
+
+    /****** FOR LOCAL DEVELOPMENT ******/
+
+    // user:"postgres",
+    // password:process.env.DB_PASS,
+    // host:"localhost",
+    // port:5432,
+    // database:"notes",
+
+    /****** FOR PRODUCTION ******/
+
+    connectionString:process.env.POSTGRES_URL + "?sslmode=require",
+    password:process.env.POSTGRES_PASSWORD
 })
 
 module.exports = pool;
