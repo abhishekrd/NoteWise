@@ -105,6 +105,11 @@ const Note = () => {
   }
 
   const addNote = async (req, res) => {
+
+    if(!note){
+      return alert("Note cannot be empty! Please write something in the Note to add...")
+    }
+
     try {
       const addedNote = await fetch(`http://localhost:5000/note/${authUser.user_id}`, {
         method: "POST",
