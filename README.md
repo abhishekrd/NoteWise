@@ -5,4 +5,4 @@ Your digital notebook for all your thoughts and ideas.
 
 ``` const { postgres, reactjs, expressjs, nodejs } = req.stack.PERN```
 
-<img src="https://skillicons.dev/icons?i=react,nodejs,express,postgres,tailwind" />
+<img src="https://skillicons.dev/icons?i=react,nodejs,express,postgres,tailwind,vercel" />
