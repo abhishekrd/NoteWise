@@ -14,6 +14,7 @@ const Note = () => {
   const [authUser, setAuthUser] = useState("");
   const [token, setToken] = useState("")
   const [show, setShow] = useState(false);
+  const [search, setSearch] = useState("");
 
 
   const getAllNotes = async () => {
@@ -195,17 +196,23 @@ const Note = () => {
 
 
       </div>
+
       <div className='flex justify-between items-center md:flex-row flex-col my-8'>
         <p className='text-4xl font'><span className="text-blue-600">Note</span>Wise</p>
         <button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={adder} >Add Note +</button>
 
       </div>
+      <input className='w-96 px-4 py-2 border border-2 border-blue rounded-lg' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input>
       {add ? <div className='flex justify-around items-center md:flex-row flex-col gap-2 my-6'>
         <input type='text' onChange={(e) => setNote(e.target.value)} className='w-[90%]  border-2 px-4 py-3 font hover:shadow-lg outline-none focus:shadow-lg focus:border-2 focus:border-blue-600 rounded-xl transition-all transition-duration-300' placeholder='Enter your Note here...'></input>
         <div className='flex justify-center items-center gap-1'><button className='exploreBtn font hover:shadow-lg ' id='save' onClick={addNote} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancel' onClick={(e) => setAdd(false)} >Cancel</button></div>
       </div> : ""}
-      <div className='flex justify-center items-center flex-col md:grid md:grid-cols-3'>
-        {notes.map(note => {
+      <div className='flex justify-center items-center lg:justify-start lg:items-start flex-col md:grid md:grid-cols-3'>
+        {notes.filter((note) => {
+        //  return search.toLowerCase() === "" || note.note_description.toLowerCase().includes(search.toLowerCase());
+            return search.toLowerCase() === "" ? note : note.note_description.toLowerCase().includes(search.toLowerCase())
+        }).map(note => {
+          console.log(note);
           return <div className='rounded-2xl md:p-12 md:m-8 p-4 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note.notes_id}>
             <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note.notes_id)}><span className="material-symbols-outlined">
               edit
