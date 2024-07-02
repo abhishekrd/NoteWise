@@ -28,7 +28,7 @@ const Login = () => {
      })
 
      const jsonUser = await userData.json();
-     console.log(jsonUser);
+     //console.log(jsonUser);
      alert("Sign in Successful!");
 
      localStorage.setItem("jwt", jsonUser.token);

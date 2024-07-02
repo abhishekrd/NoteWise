@@ -29,7 +29,7 @@ const Signup = () => {
                     password
                 })
             })
-            console.log(user);
+            //console.log(user);
             alert("Signed Up Successfully!")
             navigate("/login")
             

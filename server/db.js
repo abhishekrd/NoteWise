@@ -13,7 +13,7 @@ const pool = new Pool({
     // port:5432,
     // database:"notes",
 
-    /****** FOR PRODUCTION ******/
+    // /****** FOR PRODUCTION ******/
 
     connectionString:process.env.POSTGRES_URL + "?sslmode=require",
     password:process.env.POSTGRES_PASSWORD
