@@ -15,10 +15,12 @@ const Note = () => {
   const [token, setToken] = useState("")
   const [show, setShow] = useState(false);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(false)
 
 
   const getAllNotes = async () => {
     try {
+      setLoading(true)
       const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/notes/${authUser.user_id}`, {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("jwt")
@@ -26,9 +28,9 @@ const Note = () => {
       });
       const res = await data.json();
       const sortedRes = await res && res.sort((a, b) => a.notes_id - b.notes_id);
-      console.log(sortedRes);
+      // console.log(sortedRes);
       setNotes(sortedRes)
-
+      setLoading(false)
     }
     catch (err) {
       console.log(err);
@@ -55,7 +57,11 @@ const Note = () => {
   }
 
   const editHandler = async () => {
+    if (noteDesc == "") {
+      return window.alert("Edit Field Cannot be Empty..!")
+    }
     try {
+      setLoading(true)
       const editedNote = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${id}`, {
         method: "PUT",
         headers: {
@@ -66,9 +72,10 @@ const Note = () => {
           note_description: noteDesc
         })
       })
-      console.log(editedNote);
+      //console.log(editedNote);
       getAllNotes()
       setNoteDesc("");
+      setLoading(false)
       setEdit(false)
     } catch (err) {
       console.log(err);
@@ -78,13 +85,13 @@ const Note = () => {
   const editor = (noteId) => {
     setEdit(true);
     setId(noteId);
-    console.log(noteId);
+    // console.log(noteId);
   }
 
   const deletor = async (noteId) => {
     setId(noteId);
-    console.log(id);
-    console.log(noteId);
+    //console.log(id);
+    //console.log(noteId);
     if (window.confirm("Are you sure to delete the note?")) {
       try {
         const deleted = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${noteId}`, {
@@ -93,7 +100,7 @@ const Note = () => {
             "Authorization": "Bearer " + localStorage.getItem("jwt")
           }
         })
-        console.log(deleted);
+        //console.log(deleted);
         getAllNotes();
       }
       catch (err) {
@@ -107,7 +114,7 @@ const Note = () => {
 
   const addNote = async (req, res) => {
 
-    if(!note){
+    if (!note) {
       return alert("Note cannot be empty! Please write something in the Note to add...")
     }
 
@@ -123,7 +130,7 @@ const Note = () => {
         })
       })
       getAllNotes();
-      console.log(addedNote);
+      //console.log(addedNote);
       setAdd(false)
       setNote("")
     } catch (error) {
@@ -202,17 +209,20 @@ const Note = () => {
         <button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={adder} >Add Note +</button>
 
       </div>
-      <input className='w-96 px-4 py-2 border border-2 border-blue rounded-lg' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input>
+      <div className='w-96 relative'>
+        <input className='w-96 px-4 py-2 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input><span className="material-symbols-outlined text-2xl cursor-pointer absolute right-2 top-1/2 -translate-y-1/2">
+          search
+        </span>
+      </div>
       {add ? <div className='flex justify-around items-center md:flex-row flex-col gap-2 my-6'>
         <input type='text' onChange={(e) => setNote(e.target.value)} className='w-[90%]  border-2 px-4 py-3 font hover:shadow-lg outline-none focus:shadow-lg focus:border-2 focus:border-blue-600 rounded-xl transition-all transition-duration-300' placeholder='Enter your Note here...'></input>
         <div className='flex justify-center items-center gap-1'><button className='exploreBtn font hover:shadow-lg ' id='save' onClick={addNote} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancel' onClick={(e) => setAdd(false)} >Cancel</button></div>
       </div> : ""}
-      <div className='flex justify-center items-center lg:justify-start lg:items-start flex-col md:grid md:grid-cols-3'>
+
+      {loading ? <div className='h-screen bg-blue-100 flex justify-center items-center'><span className="loader"></span></div> : <div className='flex justify-center items-center lg:justify-start lg:items-start flex-col md:grid md:grid-cols-3'>
         {notes.filter((note) => {
-        //  return search.toLowerCase() === "" || note.note_description.toLowerCase().includes(search.toLowerCase());
-            return search.toLowerCase() === "" ? note : note.note_description.toLowerCase().includes(search.toLowerCase())
+          return search.toLowerCase() === "" ? note : note.note_description.toLowerCase().includes(search.toLowerCase())
         }).map(note => {
-          console.log(note);
           return <div className='rounded-2xl md:p-12 md:m-8 p-4 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note.notes_id}>
             <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note.notes_id)}><span className="material-symbols-outlined">
               edit
@@ -226,7 +236,8 @@ const Note = () => {
 
           </div>
         })}
-      </div>
+      </div>}
+
     </div>
   )
 }
