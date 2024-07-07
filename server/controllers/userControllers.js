@@ -33,6 +33,7 @@ const signinUser = async (req,res) => {
         }
         
         const existUser = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
+       
         if(existUser.rows.length === 0){
             return res.json("You have not signed up yet, Please signup before signing in!");
         }
