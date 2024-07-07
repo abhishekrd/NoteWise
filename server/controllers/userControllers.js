@@ -33,19 +33,17 @@ const signinUser = async (req,res) => {
         }
         
         const existUser = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
-       
         if(existUser.rows.length === 0){
-            return res.json("You have not signed up yet, Please signup before signing in!");
+            return res.status(401).json("Signup first...then you can login!")
         }
 
         const user = existUser.rows[0];
         const isValid = await bcrypt.compare(password, user.password);
         if(!isValid){
-            return res.json("Invalid Email or Password!");
+                return res.status(401).json("Invalid Email or Password!");
         }
         
         const token = await jwt.sign({user_id:user.user_id}, process.env.JWT_SECRET);
-
         return res.json({
             message:"Sign in Successfull!",
             user:user,
