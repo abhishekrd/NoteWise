@@ -26,9 +26,11 @@ const Login = () => {
           password
         })
      })
-
+     
+     if(userData.status === 401){
+      return alert("Invalid Email or Password!")
+     }
      const jsonUser = await userData.json();
-     //console.log(jsonUser);
      alert("Sign in Successful!");
 
      localStorage.setItem("jwt", jsonUser.token);
