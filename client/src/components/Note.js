@@ -185,7 +185,7 @@ const Note = () => {
       <div className='flex justify-between items-start'>
         <p className='text-2xl font'>Hello <br></br><span className='text-blue-600'>{authUser.name}!</span></p>
 
-        {show ? <div className='flex justify-center items-center flex-col'>
+        {show ? <div className='flex justify-center items-end flex-col'>
           <span onClick={showProfile} className="material-symbols-outlined cursor-pointer text-red-800">
             cancel
           </span>
