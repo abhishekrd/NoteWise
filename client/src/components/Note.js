@@ -183,13 +183,12 @@ const Note = () => {
 
     <div className='md:m-16 md:p-16 p-4 m-2 bg-blue-100 rounded-xl shadow-xl'>
       <div className='flex justify-between items-start'>
-        <p className='text-2xl font'>Hello <br></br><span className='text-blue-600'>{authUser.name}!</span></p>
-
+      <p className='text-4xl font bold'><span className="bold text-blue-600">Note</span>Wise</p>
         {show ? <div className='flex justify-center items-end flex-col'>
           <span onClick={showProfile} className="material-symbols-outlined cursor-pointer text-red-800">
             cancel
           </span>
-          <div className='flex justify-center items-center flex-col bg-white rounded-lg p-4 shadow-lg'>
+          <div className='flex justify-center items-center flex-col bg-white rounded-lg p-4 shadow-lg bg-opacity-75'>
             <p className='font'>{authUser.name}</p>
             <p className='font'>{authUser.email}</p>
             <button onClick={logoutHandler} className='exploreBtn font' id='cancelBtn'>Logout</button>
@@ -205,20 +204,20 @@ const Note = () => {
       </div>
 
       <div className='flex justify-between items-center md:flex-row flex-col my-8'>
-        <p className='text-4xl font'><span className="text-blue-600">Note</span>Wise</p>
+        <p className='text-2xl font'>Hello <br></br><span className='text-blue-600'>{authUser.name}!</span></p>
         <button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={adder} >Add Note +</button>
 
       </div>
       
       {/* If There are no notes, hide the search field */}
-      {notes.length === 0 && !loading ? <p className='text-xl font'>Nothing here yet, Add Notes to get started...✏️</p> : <div className='lg:w-96 w-80 relative'>
-        <input className='lg:w-96 w-80 px-4 py-2 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input><span className="material-symbols-outlined text-2xl cursor-pointer absolute right-4 top-1/2 -translate-y-1/2">
+      {notes.length === 0 && !loading ? <p className='text-xl font'>Nothing here yet, Add Notes to get started...✏️</p> : <div className='flex justify-center items-center'><div className='lg:w-96 w-80 relative'>
+        <input className='lg:w-96 bg-opacity-75 w-80 px-8 py-3 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input><span className="material-symbols-outlined text-2xl cursor-pointer absolute right-4 top-1/2 -translate-y-1/2">
           search
         </span>
-      </div>}
+      </div></div>}
      
       {add ? <div className='flex justify-around items-center md:flex-row flex-col gap-2 my-6'>
-        <input type='text' onChange={(e) => setNote(e.target.value)} className='w-[90%]  border-2 px-4 py-3 font hover:shadow-lg outline-none focus:shadow-lg focus:border-2 focus:border-blue-600 rounded-xl transition-all transition-duration-300' placeholder='Enter your Note here...'></input>
+        <input type='text' onChange={(e) => setNote(e.target.value)} className='w-[90%]  border-2 px-4 py-3 font hover:shadow-lg outline-none focus:shadow-lg focus:border-2 focus:border-blue-600 rounded-lg transition-all transition-duration-300' placeholder='Enter your Note here...'></input>
         <div className='flex justify-center items-center gap-1'><button className='exploreBtn font hover:shadow-lg ' id='save' onClick={addNote} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancel' onClick={(e) => setAdd(false)} >Cancel</button></div>
       </div> : ""}
 
@@ -226,16 +225,16 @@ const Note = () => {
         {notes.filter((note) => {
           return search.toLowerCase() === "" ? note : note.note_description.toLowerCase().includes(search.toLowerCase())
         }).map(note => {
-          return <div className='rounded-2xl md:p-12 md:m-8 p-4 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note.notes_id}>
+          return <div className='rounded-lg bg-opacity-75 md:p-8 md:m-8 p-6 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note.notes_id}>
             <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note.notes_id)}><span className="material-symbols-outlined">
               edit
             </span></button>
               <button className='' onClick={() => deletor(note.notes_id)}><span className="material-symbols-outlined">
                 delete
               </span></button></div>
-            <p className='text-xl font'>{note.note_description}</p>
+            <p className='text-lg font'>{note.note_description}</p>
 
-            {edit && note.notes_id === id ? <> <input className='px-4 my-2 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500 py-2' onChange={(e) => setNoteDesc(e.target.value)} placeholder='edit note...'></input><div className='flex justify-center items-center gap-2'><button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={editHandler} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancelBtn' onClick={(e) => setEdit(false)} >Cancel</button></div></> : ""}
+            {edit && note.notes_id === id ? <> <input className='px-4 w-72 my-2 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500 py-2' onChange={(e) => setNoteDesc(e.target.value)} placeholder='Edit note...'></input><div className='flex justify-center items-center gap-2'><button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={editHandler} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancelBtn' onClick={(e) => setEdit(false)} >Cancel</button></div></> : ""}
 
           </div>
         })}
