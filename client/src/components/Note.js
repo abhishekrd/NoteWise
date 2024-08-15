@@ -139,7 +139,7 @@ const Note = () => {
   }
 
   const adder = () => {
-    setAdd(true);
+    setAdd(true); 
   }
 
   const showProfile = () => {
@@ -210,11 +210,11 @@ const Note = () => {
       </div>
       
       {/* If There are no notes, hide the search field */}
-      {notes.length === 0 && !loading ? <p className='text-xl font'>Nothing here yet, Add Notes to get started...✏️</p> : <div className='flex justify-center items-center'><div className='lg:w-96 w-80 relative'>
-        <input className='lg:w-96 bg-opacity-75 w-80 px-8 py-3 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input><span className="material-symbols-outlined text-2xl cursor-pointer absolute right-4 top-1/2 -translate-y-1/2">
+      {notes.length === 0 && !loading ? <p className='text-xl font'>Nothing here yet, Add Notes to get started...✏️</p> : <div className='flex justify-center items-center'>
+       {add ? <></> : <div className='lg:w-96 w-80 relative'><input className='lg:w-96 bg-opacity-75 w-80 px-8 py-3 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500' onChange={(e) => setSearch(e.target.value)} placeholder='Search Notes...'></input><span className="material-symbols-outlined text-2xl cursor-pointer absolute right-4 top-1/2 -translate-y-1/2">
           search
-        </span>
-      </div></div>}
+        </span></div>} 
+      </div>}
      
       {add ? <div className='flex justify-around items-center md:flex-row flex-col gap-2 my-6'>
         <input type='text' onChange={(e) => setNote(e.target.value)} className='w-[90%]  border-2 px-4 py-3 font hover:shadow-lg outline-none focus:shadow-lg focus:border-2 focus:border-blue-600 rounded-lg transition-all transition-duration-300' placeholder='Enter your Note here...'></input>
