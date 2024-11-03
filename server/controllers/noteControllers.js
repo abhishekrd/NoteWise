@@ -1,11 +1,17 @@
-const pool = require("../db")
+const Note = require("../models/note")
+const User = require("../models/user")
 
 const postNote = async (req,res) => {
     try{
         const userId = req.params.userId;
         const {note_description} = req.body;
-        const newNote = await pool.query("INSERT INTO Notes (note_description, user_id) VALUES($1,$2) RETURNING *",[note_description, userId])
-        res.json(newNote.rows);
+        const newNote = new Note({
+            note_description:note_description,
+            user_id:userId
+        })
+
+        await newNote.save()
+        res.status(200).json(newNote);
      }
      catch(err){
          console.log(err);
@@ -17,8 +23,10 @@ const getAllNotes = async (req,res) => {
     const userId = req.params.userId;
 
     try{
-       const allNotes = await pool.query("SELECT * FROM notes WHERE user_id = $1", [userId]);
-       res.json(allNotes.rows);
+       const allNotes = await Note.find({user_id:userId})
+       console.log("ALLNOTES:",allNotes);
+       
+       res.status(200).json(allNotes);
     } 
     catch (err) {
       console.log(err)  
@@ -28,8 +36,8 @@ const getAllNotes = async (req,res) => {
 const getNoteById = async (req,res) => {
     try{
       const noteId = req.params.id;
-      const note = await pool.query("SELECT * FROM notes WHERE notes_id = $1",[noteId]);
-      res.json(note.rows);
+      const note = await Note.find({_id:noteId})
+      res.status(200).json(note);
     }
     catch(err){
         console.log(err);
@@ -40,8 +48,14 @@ const updateNote = async (req,res) => {
     try{
      const noteId = req.params.id;
      const description = req.body.note_description;
-     const updatenote = await pool.query("UPDATE notes SET note_description = $1 WHERE notes_id = $2",[description,noteId]);
-     res.json("Note was updated Successfully!");
+     const updateNote = await Note.findByIdAndUpdate(noteId, {note_description:description}, {new:true})
+     if(!updateNote){
+        return res.json("Cannot find the note to update")
+     }
+     res.status(200).json({
+        message: "Note was updated Successfully!",
+        note: updateNote
+    });
     }
     catch(err){
      console.log(err);
@@ -51,8 +65,14 @@ const updateNote = async (req,res) => {
 const removeNote = async (req,res) => {
     try {
        const noteId = req.params.id;
-       const deleteNote = await pool.query("DELETE FROM notes WHERE notes_id = $1",[noteId]);
-       res.json("Note Deleted Successfully!") 
+       const deleteNote = await Note.findByIdAndDelete(noteId)
+       if(!deleteNote){
+          return res.status(404).json("Cannot find note to Delete")
+       }
+       res.status(200).json(
+        {message:"Note Deleted Successfully!",
+         note:deleteNote
+        }) 
     } catch (error) {
         console.log(error);
     }

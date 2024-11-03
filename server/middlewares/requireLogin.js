@@ -1,7 +1,8 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const pool = require("../db")
+const mongoose = require("mongoose")
+const User = require('../models/user')
 dotenv.config();
 
 const isLoggedin = async (req,res,next) => {
@@ -24,8 +25,13 @@ const isLoggedin = async (req,res,next) => {
 
        const {user_id} = payload;
           
-       const userFound = await pool.query("SELECT * FROM users WHERE user_id = $1",[user_id]);
-       const user = userFound.rows[0];
+       const userFound = await User.findById(user_id)
+       console.log("USERFOUND : ", userFound);
+       
+       if(!userFound){
+          return res.json("JWT Error: User not found")
+       }
+       const user = userFound;
 
        req.user = user;
        next();

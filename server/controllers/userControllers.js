@@ -1,7 +1,8 @@
-const pool = require("../db");
+const mongoose = require('mongoose')
 const bcrypt = require("bcrypt");
 const dotenv = require("dotenv");
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
+const User = require('../models/user')
 const saltRounds = 10;
 dotenv.config();
 
@@ -15,9 +16,15 @@ const signupUser = async (req,res) => {
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPass = await bcrypt.hash(password, salt);
 
-    const newUser = await pool.query("INSERT INTO users (name, email, password) VALUES($1, $2, $3)", [name, email, hashedPass])
+    const newUser = new User({
+         name:name,
+         email:email,
+         password:hashedPass
+    })
+
+    await newUser.save()
     res.json("Signup Successful!");
-    console.log(newUser.rows);
+    console.log(newUser);
 
     } catch (error) {
         console.log(error);
@@ -32,18 +39,20 @@ const signinUser = async (req,res) => {
             return res.json("Please enter all the fields!");
         }
         
-        const existUser = await pool.query("SELECT * FROM users WHERE email = $1",[email]);
-        if(existUser.rows.length === 0){
+        const existUser = await User.find({email:email})
+        if(existUser.length === 0){
             return res.status(401).json("Signup first...then you can login!")
         }
 
-        const user = existUser.rows[0];
+        console.log("EXIST USER : ", existUser);
+        
+        const user = existUser[0];
         const isValid = await bcrypt.compare(password, user.password);
         if(!isValid){
                 return res.status(401).json("Invalid Email or Password!");
         }
         
-        const token = await jwt.sign({user_id:user.user_id}, process.env.JWT_SECRET);
+        const token = await jwt.sign({user_id:user._id}, process.env.JWT_SECRET);
         return res.json({
             message:"Sign in Successfull!",
             user:user,

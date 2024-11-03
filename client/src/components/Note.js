@@ -21,7 +21,7 @@ const Note = () => {
   const getAllNotes = async () => {
     try {
       setLoading(true)
-      const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/notes/${authUser.user_id}`, {
+      const data = await fetch(`${process.env.REACT_APP_BACKEND_URL}/notes/${authUser._id}`, {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("jwt")
         }
@@ -119,7 +119,7 @@ const Note = () => {
     }
 
     try {
-      const addedNote = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${authUser.user_id}`, {
+      const addedNote = await fetch(`${process.env.REACT_APP_BACKEND_URL}/note/${authUser._id}`, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
@@ -225,16 +225,16 @@ const Note = () => {
         {notes.filter((note) => {
           return search.toLowerCase() === "" ? note : note.note_description.toLowerCase().includes(search.toLowerCase())
         }).map(note => {
-          return <div className='rounded-lg bg-opacity-75 md:p-8 md:m-8 p-6 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note.notes_id}>
-            <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note.notes_id)}><span className="material-symbols-outlined">
+          return <div className='rounded-lg bg-opacity-75 md:p-8 md:m-8 p-6 m-3 bg-white flex items-start flex-col justify-start shadow-lg' key={note._id}>
+            <div className='flex justify-end items-center gap-2 py-4'><button className='' onClick={() => editor(note._id)}><span className="material-symbols-outlined">
               edit
             </span></button>
-              <button className='' onClick={() => deletor(note.notes_id)}><span className="material-symbols-outlined">
+              <button className='' onClick={() => deletor(note._id)}><span className="material-symbols-outlined">
                 delete
               </span></button></div>
             <p className='text-lg font'>{note.note_description}</p>
 
-            {edit && note.notes_id === id ? <> <input className='px-4 w-72 my-2 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500 py-2' onChange={(e) => setNoteDesc(e.target.value)} placeholder='Edit note...'></input><div className='flex justify-center items-center gap-2'><button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={editHandler} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancelBtn' onClick={(e) => setEdit(false)} >Cancel</button></div></> : ""}
+            {edit && note._id === id ? <> <input className='px-4 w-72 my-2 border-2 focus:shadow-lg transition-all ease-in transition-duration-300 rounded-lg font outline-none active:border-2 focus:border-2 focus:border-blue-500 active:border-blue-500 py-2' onChange={(e) => setNoteDesc(e.target.value)} placeholder='Edit note...'></input><div className='flex justify-center items-center gap-2'><button className='exploreBtn font hover:shadow-lg' id='saveBtn' onClick={editHandler} >Save</button> <button className='exploreBtn font hover:shadow-lg hover:bg-red-400' id='cancelBtn' onClick={(e) => setEdit(false)} >Cancel</button></div></> : ""}
 
           </div>
         })}
