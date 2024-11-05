@@ -18,7 +18,7 @@ const Signup = () => {
         
         try {
             setLoading(true)
-            const user = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`,{
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/signup`,{
                 method:"POST",
                 headers:{
                     "Content-type":"application/json"
@@ -29,8 +29,10 @@ const Signup = () => {
                     password
                 })
             })
-            //console.log(user);
-            alert("Signed Up Successfully!")
+            let jsonResponse = await response.json()
+            if(!response.ok){
+               return alert(`${jsonResponse.error}` || "Something went wrong! Please try again")   
+            }
             navigate("/login")
             
         } catch (error) {

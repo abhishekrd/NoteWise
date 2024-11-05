@@ -12,6 +12,15 @@ const signupUser = async (req,res) => {
       if(!name || !email || !password){
          return res.send("Please Enter all the Fields!");
       }
+
+    const regexForEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+    const isValidEmail = (mail, pattern) => {
+         return pattern.test(mail)
+    }
+    
+    if(!isValidEmail(email, regexForEmail)){
+       return res.status(400).json({error:"Please enter valid email"})
+    }
     
     const salt = await bcrypt.genSalt(saltRounds);
     const hashedPass = await bcrypt.hash(password, salt);
@@ -23,7 +32,7 @@ const signupUser = async (req,res) => {
     })
 
     await newUser.save()
-    res.json("Signup Successful!");
+    res.status(200).json({message: "Signup Successful!"});
     console.log(newUser);
 
     } catch (error) {
